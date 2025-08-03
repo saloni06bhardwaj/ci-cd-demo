@@ -1,7 +1,7 @@
 CI/CD Pipeline for Node.js App using Jenkins and AWS EC2
 This project demonstrates a complete CI/CD pipeline setup for a simple Node.js application using Jenkins. The pipeline automates code checkout, dependency installation, application run, and basic validation. The deployment is done on an AWS EC2 instance.
 
-🛠️ Tech Stack
+Tech Stack
 Jenkins – For building the CI/CD pipeline
 
 Git & GitHub – Version control and SCM
@@ -14,7 +14,7 @@ Shell Scripting – Running commands and scripts
 
 VS Code – Development environment
 
-📂 Project Structure
+Project Structure
 bash
 Copy
 Edit
@@ -23,11 +23,8 @@ Edit
 ├── package.json
 ├── app.js / index.js     # Your Node.js app entry point
 └── node_modules/
-🚀 CI/CD Pipeline Flow
+CI/CD Pipeline Flow
 Jenkinsfile
-groovy
-Copy
-Edit
 pipeline {
     agent any
 
@@ -58,14 +55,14 @@ pipeline {
 
     post {
         success {
-            echo "✅ CI/CD pipeline executed successfully!"
+            echo "CI/CD pipeline executed successfully!"
         }
         failure {
-            echo "❌ CI/CD pipeline failed."
+            echo "CI/CD pipeline failed."
         }
     }
 }
-🧱 Step-by-Step Setup
+Step-by-Step Setup
 1. Setup AWS EC2 Instance
 Launch a Ubuntu EC2 instance.
 
@@ -73,16 +70,11 @@ Allow ports 22, 8080 (Jenkins), and 3000 (Node app).
 
 SSH into the server and update it:
 
-bash
-Copy
-Edit
 sudo apt update && sudo apt upgrade
 2. Install Jenkins
 Install Java and Jenkins
 
-bash
-Copy
-Edit
+
 sudo apt install openjdk-17-jdk
 wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
 sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
@@ -95,9 +87,7 @@ Access Jenkins via http://<your-ec2-public-ip>:8080
 Unlock Jenkins and install recommended plugins.
 
 3. Install Node.js
-bash
-Copy
-Edit
+
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt-get install -y nodejs
 4. Configure Jenkins
@@ -113,6 +103,46 @@ Create a Pipeline project
 Connect your GitHub repository (SCM)
 
 Paste the Jenkinsfile content
+pipeline {
+    agent any
+
+    tools {
+        nodejs "nodejs"  // Make sure 'nodejs' is defined in Jenkins Global Tool Config
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+                sh 'ls -la'  // For debugging
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Run App') {  
+            steps {
+        sh '''
+            nohup npm start > app.log 2>&1 &
+        '''
+            }
+        }
+}
+
+    post {
+        success {
+            echo "✅ CI/CD pipeline executed successfully!"
+        }
+        failure {
+            echo "❌ CI/CD pipeline failed."
+        }
+    }
+}
+
 
 Click Build Now
 
