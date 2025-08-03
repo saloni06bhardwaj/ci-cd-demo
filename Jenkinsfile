@@ -19,12 +19,14 @@ pipeline {
             }
         }
 
-        stage('Run App') {
+        stage('Run App') {  
             steps {
-                sh 'npm start'
+        sh '''
+            nohup npm start > app.log 2>&1 &
+        '''
             }
         }
-    }
+}
 
     post {
         success {
