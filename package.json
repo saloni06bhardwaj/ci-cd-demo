@@ -1,0 +1,15 @@
+{
+  "name": "node-ci-cd-demo",
+  "version": "1.0.0",
+  "description": "A basic Node.js app for Jenkins CI/CD pipeline",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"No tests yet\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
